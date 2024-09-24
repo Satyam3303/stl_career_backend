@@ -3,6 +3,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config('.env');
 
+const jsonSyntaxErrorHandler = require('./app/utils/syntaxErrorHandler');
+
 const app = express();
 const port = process.env.PORT;
 //const userRoutes = require('./routes/userRoutes');
@@ -13,21 +15,8 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
-
-// Handle syntax errors in JSON
-app.use((err, req, res, next) => {
-  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
-    logger.error(`Invalid JSON format: ${err.message}`);
-    return res.status(400).json({
-      status_code: 400,
-      success: false,
-      message: 'Invalid JSON format',
-      error: err.message,
-    });
-  }
-  next(err); 
-});
-
+// Use the external JSON syntax error handler middleware
+app.use(jsonSyntaxErrorHandler);
 
 // Route handling
 //app.use('/api/user/v1', userRoutes);
