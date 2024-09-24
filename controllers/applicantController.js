@@ -257,6 +257,7 @@ exports.applyApplicant = async (req, res) => {
       return res.status(404).send({
         status_code: 404,
         message: messages.en.Users.error.no_user_found,
+        success: false,
         response: {},
       });
     }
