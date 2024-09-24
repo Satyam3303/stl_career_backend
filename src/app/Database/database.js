@@ -1,8 +1,8 @@
 const { Sequelize } = require('sequelize');
 
 //Database Details
-const sequelize = new Sequelize('cms_db', 'root', '', {
-  host: 'localhost',
+const sequelize = new Sequelize('cms_v1', 'remotemysql', 'pAssword@123', {
+  host: '192.168.0.113',
   dialect: 'mysql',
 });
 
