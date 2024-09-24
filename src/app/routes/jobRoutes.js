@@ -4,10 +4,10 @@ const {
   getAllJobs,
   getJobByJobId,
   registerJob
-} = require("../../../controllers/jobController");
+} = require("../controllers/jobController");
 
 // Authentication using JWT
-const authMiddleware = require('../../../middleware/authMiddleware');
+const authMiddleware = require('../middleware/authMiddleware');
 
 router.post("/job/:job_id", registerJob);
 router.get("/job/", getAllJobs);

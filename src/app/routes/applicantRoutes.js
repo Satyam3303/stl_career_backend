@@ -5,12 +5,12 @@ const {
   getApplicantByApplicantCode,
   loginApplicant,
   applyApplicant
-} = require("../../../controllers/applicantController");
+} = require("../controllers/applicantController");
 
-const upload = require('../../../utils/upload'); 
+const upload = require('../utils/upload'); 
 
 // Authentication using JWT
-const authMiddleware = require("../../../middleware/authMiddleware");
+const authMiddleware = require("../middleware/authMiddleware");
 
 router.post("/register", registerApplicant);
 router.post("/login", loginApplicant);

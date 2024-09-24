@@ -4,7 +4,7 @@ const { createJob, getAllJobs, findJobByJobId } = require("../models/JobMaster")
 // const { Op } = require("sequelize");
 // const sendMail = require('../utils/sendMail');
 // const sendSms = require('../utils/sendSms');
-const messages = require("../../../utils/messages.json");
+const messages = require("../utils/messages.json");
 
 // Get all Jobs
 exports.registerJob = async (req, res) => {

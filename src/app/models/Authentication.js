@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../database');
-const AuthenticationSchema = require('../src/app/Schema/authenticationSchema');
+const sequelize = require('../Database/database');
+const AuthenticationSchema = require('../Schema/authenticationSchema');
 
 const Authentication = sequelize.define('Authentication', AuthenticationSchema, {
   tableName: 'authentication_table',

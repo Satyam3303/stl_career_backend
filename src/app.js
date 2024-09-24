@@ -1,14 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const logger = require('../utils/logger'); 
 require('dotenv').config('.env');
 
 const app = express();
 const port = process.env.PORT;
 //const userRoutes = require('./routes/userRoutes');
-const jobRoutes = require('../routes/jobRoutes');
-const applicantRoutes = require('../routes/applicantRoutes');
+const jobRoutes = require('./app/routes/jobRoutes');
+const applicantRoutes = require('./app/routes/applicantRoutes');
 
 app.use(cors());
 app.use(express.json());
@@ -46,6 +45,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-  logger.info(`Server app listening on port ${port}!`);
   console.log(`Server app listening on port ${port}!`);
 });
