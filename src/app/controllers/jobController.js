@@ -1,5 +1,9 @@
-const { createJob, getAllJobs, findJobByJobCode } = require("../models/JobMaster");
-const { expiry_date } = require("../Schema/jobMasterSchema");
+const {
+  createJob,
+  getAllJobs,
+  findJobByJobCode,
+} = require("../models/JobMaster");
+const { expiry_date, experience } = require("../Schema/jobMasterSchema");
 
 // const { generateToken } = require("../utils/JWT");
 // const { Op } = require("sequelize");
@@ -10,9 +14,19 @@ const messages = require("../utils/messages.json");
 // Register an Applicant
 exports.registerJob = async (req, res) => {
   try {
-    const { username, phone, email, password } = req.body;
+    const {
+      job_title,
+      description,
+      job_category,
+      from_value_payScale,
+      to_value_payScale,
+      start_date,
+      expiry_date,
+      experience,
+      status,
+    } = req.body;
 
-    if (!username || !phone || !email || !password) {
+    if (!job_title || !description || !job_category || !from_value_payScale || !to_value_payScale || !start_date || !expiry_date || !experience || !status) {
       return res.status(400).send({
         status_code: 400,
         success: false,
@@ -24,26 +38,34 @@ exports.registerJob = async (req, res) => {
     let job_code;
     let checkCode;
 
+    const pay_scale = JSON.stringify({
+      min: from_value_payScale,
+      max: to_value_payScale,
+      unit: 'LPA',
+    });
+
     const generatejobCode = () => {
-      return Math.random().toString(36).substring(2, 10).toUpperCase();
+      return parseInt(Math.random()*100000);
     };
 
     do {
       job_code = generatejobCode();
+      console.log(job_code)
       checkCode = await findJobByJobCode(job_code);
     } while (checkCode);
 
     const newJob = await createJob({
-      job_code:job_code,
+      job_code: job_code,
       job_title,
       description,
       job_category,
-      pay_scale,
+      pay_scale: pay_scale,
       start_date,
       expiry_date,
+      experience,
       status,
       created_by: "Admin",
-      created_at: new Date(),
+      created_on: new Date(),
       updated_by: "Admin",
       updated_at: new Date(),
     });
@@ -51,7 +73,7 @@ exports.registerJob = async (req, res) => {
     return res.status(201).send({
       status_code: 201,
       success: true,
-      message: messages.en.Users.success.User_Create,
+      message: messages.en.Jobs.success.Created,
       response: {
         newJob: newJob,
       },
@@ -60,25 +82,24 @@ exports.registerJob = async (req, res) => {
     return res.status(500).send({
       status_code: 500,
       success: false,
-      message: messages.en.Users.error.internal_server_error,
-      response:{
-        error: error.message || error,
-      }
+      message: messages.en.Jobs.error.internal_server_error,
+      response: {
+        error: error || error,
+      },
     });
   }
 };
 
-// Get Job By Job Id
-exports.getJobByJobId = async (req, res) => {
+// Get Job By Job Code
+exports.getJobByJobCode = async (req, res) => {
   try {
     const { job_code } = req.params;
     const Job = await findJobByJobCode(job_code);
-
     if (!Job) {
       return res.status(404).send({
         status_code: 404,
         success: false,
-        message: messages.en.Users.error.No_Job_Found,
+        message: messages.en.Jobs.error.No_Job_Found,
         response: {},
       });
     }
@@ -88,7 +109,7 @@ exports.getJobByJobId = async (req, res) => {
       success: true,
       message: messages.en.Jobs.success.Single_Job,
       response: {
-        applicant,
+        Job,
       },
     });
   } catch (error) {
