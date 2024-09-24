@@ -31,41 +31,13 @@
                 "userName_already_registered":"Username already registered"
             }
         },
-        "Products": {
-            "success": {
-                "new_Product": "New Product Created",
-                "all_Products_Fetch": "All Products",
-                "update": "Product Updated Successfully",
-                "fetched": "Product Fetched Successfully",
-                "delete": "Product deleted successfully"
-            },
-            "error": {
-                "empty_fields": "The appropriate fields are Empty",
-                "internal_server_error": "Internal Server Error",
-                "product_not_found": "Product Not Found",
-                "user_name_required": "User Name is required"
-            }
-        },
-        "Customer": {
-            "success": {
-                "product_successfully_deleted": "Product successfully deleted from the cart.",
-                "product_successfully_found": "Product successfully Found from the cart."
-            },
-            "error": {
-                "product_not_found": "Product not found in the cart"
-            }
-        },
-        "Orders": {
-            "error": {
-                "internal_server_error": "An internal server error occurred"
-            },
-            "success": {
-                "Order_Created": "Order created successfully"
-            }
-        },
         "Jobs":{
             "success":{
-                "All_Jobs_Fetch":"All Jobs Fetched Successfully"
+                "All_Jobs_Fetch":"All Jobs Fetched Successfully",
+                "Single_Job":"Job Data Fetched Successfully"
+            },
+            "error":{
+                "No_Job_Found":"Job Not Found"
             }
         }
     }

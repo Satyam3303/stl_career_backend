@@ -1,14 +1,14 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const logger = require('./utils/logger'); 
+const logger = require('../utils/logger'); 
 require('dotenv').config('.env');
 
 const app = express();
 const port = process.env.PORT;
 //const userRoutes = require('./routes/userRoutes');
-const jobRoutes = require('./routes/jobRoutes');
-const applicantRoutes = require('./routes/applicantRoutes');
+const jobRoutes = require('../routes/jobRoutes');
+const applicantRoutes = require('../routes/applicantRoutes');
 
 app.use(cors());
 app.use(express.json());

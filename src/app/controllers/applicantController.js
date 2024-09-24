@@ -13,7 +13,7 @@ const saltRounds = 10;  // Number of salt rounds for hashing
 const {
   createAuthentication,
   findAuthenticationByUserCode,
-} = require("../models/Authentication");
+} = require("../../../models/Authentication");
 const { role_code } = require("../Schema/authenticationSchema");
 
 const { generateToken } = require("../utils/JWT");

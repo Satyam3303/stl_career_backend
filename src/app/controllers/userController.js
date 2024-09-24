@@ -3,12 +3,12 @@ const {
   findUserByUserCode,
   findUserByPhone,
   findUserByEmail,
-} = require("../models/User");
+} = require("../../../models/User");
 
 const {
   createAuthentication,
   findAuthenticationByUserCode,
-} = require("../models/Authentication");
+} = require("../../../models/Authentication");
 
 const { generateToken } = require("../utils/JWT");
 const messages = require("../utils/messages.json");

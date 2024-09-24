@@ -1,4 +1,4 @@
-const sequelize = require('./database');
+const sequelize = require('../Database/database');
 
 
 //Forces the table to synchronize with the database

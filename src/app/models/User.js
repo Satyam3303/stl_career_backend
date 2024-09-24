@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database');
-const UserSchema = require('../Schema/userSchema');
+const UserSchema = require('../src/app/Schema/userSchema');
 
 const User = sequelize.define('User', UserSchema, {
   tableName: 'user_table',
