@@ -73,6 +73,7 @@ exports.registerApplicant = async (req, res) => {
       user_code:applicant_code,
       password,
       email,
+      role_code:"APPLICANT",
       created_by: applicant_code,
       created_at: new Date(),
       updated_by: applicant_code,

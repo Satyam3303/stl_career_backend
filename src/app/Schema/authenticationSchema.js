@@ -17,7 +17,7 @@ const AuthenticationSchema = {
   },
   role_code: {
     type: DataTypes.STRING(20),
-    allowNull: true,
+    allowNull: false,
   },
   token: {
     type: DataTypes.STRING(255),

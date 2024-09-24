@@ -9,8 +9,8 @@ const {
 // Authentication using JWT
 const authMiddleware = require('../middleware/authMiddleware');
 
-router.post("/job/:job_id", registerJob);
-router.get("/job/", getAllJobs);
+router.post("/job", registerJob);
+router.get("/job", getAllJobs);
 router.get("/job/:job_id", getJobByJobId);
 
 module.exports = router;
