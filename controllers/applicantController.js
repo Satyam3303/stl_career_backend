@@ -3,8 +3,12 @@ const {
   findApplicantByApplicantCode,
   findApplicantByPhone,
   findApplicantByUserName,
+  findApplicantByEmail,
   updateApplicant
 } = require("../models/Applicant");
+
+const bcrypt = require('bcrypt');
+const saltRounds = 10;  // Number of salt rounds for hashing
 
 const {
   createAuthentication,
@@ -21,6 +25,7 @@ const isPhoneNumberValid = (value) => /^[0-9]{10}$/.test(value);
 exports.registerApplicant = async (req, res) => {
   try {
     const { username, phone, email, password } = req.body;
+
     if (!username || !phone || !email || !password) {
       return res.status(400).send({
         status_code: 400,
@@ -29,19 +34,23 @@ exports.registerApplicant = async (req, res) => {
         response: {},
       });
     }
+
     let applicant_code;
     let checkCode;
+
     const generateUserCode = () => {
       return Math.random().toString(36).substring(2, 10).toUpperCase();
     };
+
     do {
       applicant_code = generateUserCode();
       checkCode = await findApplicantByApplicantCode(applicant_code);
     } while (checkCode);
+
     const checkUserName = await findApplicantByUserName(username);
-    const checkPhone = await findApplicantByPhone(username);
-    
-    if (checkUserName || checkPhone) {
+    // const checkEmail = await findApplicantByEmail(email);
+
+    if (checkUserName) {
       return res.status(400).send({
         status_code: 400,
         success: false,
@@ -50,6 +59,7 @@ exports.registerApplicant = async (req, res) => {
         response: {},
       });
     }
+
     if (!isPhoneNumberValid(phone)) {
       return res.status(400).send({
         status_code: 400,
@@ -58,6 +68,7 @@ exports.registerApplicant = async (req, res) => {
         response: {},
       });
     }
+
     const newAuthentication = await createAuthentication({
       user_code:applicant_code,
       password,
@@ -67,6 +78,7 @@ exports.registerApplicant = async (req, res) => {
       updated_by: applicant_code,
       updated_at: new Date(),
     });
+
     const newApplicant = await createApplicant({
       applicant_code,
       username,
@@ -77,6 +89,9 @@ exports.registerApplicant = async (req, res) => {
       updated_by: applicant_code,
       updated_at: new Date(),
     });
+
+
+
     return res.status(201).send({
       status_code: 201,
       success: true,
@@ -149,8 +164,8 @@ exports.loginApplicant = async (req, res) => {
   try {
     const { username, password } = req.body;
 
+    // Find the applicant by username
     const applicant = await findApplicantByUserName(username);
-    const authenticationPassword = await findAuthenticationByUserCode(applicant.applicant_code);
 
     if (!applicant) {
       return res.status(404).send({
@@ -160,7 +175,11 @@ exports.loginApplicant = async (req, res) => {
       });
     }
 
-    if (password !== authenticationPassword.password) {
+    // Find the hashed password using the applicant code
+    const authenticationRecord = await findAuthenticationByUserCode(applicant.applicant_code);
+
+    // Check if authenticationRecord exists and contains a valid password
+    if (!authenticationRecord || !authenticationRecord.password) {
       return res.status(400).send({
         status_code: 400,
         success: false,
@@ -169,6 +188,35 @@ exports.loginApplicant = async (req, res) => {
       });
     }
 
+    const authenticationPassword = authenticationRecord.password; // Ensure it's a string
+
+    if (typeof password !== 'string' || typeof authenticationPassword !== 'string') {
+      console.error('Password or authenticationPassword is not a string:', {
+        password,
+        authenticationPassword,
+      });
+      return res.status(500).send({
+        status_code: 500,
+        success: false,
+        message: 'Internal Server Error: Passwords must be strings',
+        response: {},
+      });
+    }
+
+    // Compare the input password with the hashed password from the database
+    const match = await bcrypt.compare(password, authenticationPassword);
+
+    // Ensure to wait for the result of compare
+    if (!match) {
+      return res.status(400).send({
+        status_code: 400,
+        success: false,
+        message: messages.en.Users.error.invalid_Username_Or_Password,
+        response: {},
+      });
+    }
+
+    // Generate a token for the authenticated user
     const token = generateToken(applicant);
 
     return res.status(200).send({
@@ -180,6 +228,7 @@ exports.loginApplicant = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error('Error during login:', error);
     return res.status(500).send({
       status_code: 500,
       success: false,
