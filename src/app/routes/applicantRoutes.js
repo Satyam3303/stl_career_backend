@@ -7,7 +7,7 @@ const {
   applyApplicant
 } = require("../controllers/applicantController");
 
-const upload = require('../utils/upload'); 
+const upload = require('../middleware/upload'); 
 
 // Authentication using JWT
 const authMiddleware = require("../middleware/authMiddleware");
