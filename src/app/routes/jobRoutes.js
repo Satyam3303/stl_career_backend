@@ -1,16 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getAllJobs,
-  getJobByJobId,
-  registerJob
+  getAllJobsHandler,
+  getJobByJobCode,
+  createJobHandler
 } = require("../controllers/jobController");
 
-// Authentication using JWT
+// Authentication using JWT(Currently not implemented because of missing admin/user logic)
 const authMiddleware = require('../middleware/authMiddleware');
 
-router.post("/job/:job_id", registerJob);
-router.get("/job/", getAllJobs);
-router.get("/job/:job_id", getJobByJobId);
+router.post("/job", createJobHandler);
+router.get("/job", getAllJobsHandler);
+router.get("/job/:job_code", getJobByJobCode);
 
 module.exports = router;

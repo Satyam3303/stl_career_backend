@@ -35,7 +35,8 @@
         "Jobs":{
             "success":{
                 "All_Jobs_Fetch":"All Jobs Fetched Successfully",
-                "Single_Job":"Job Data Fetched Successfully"
+                "Single_Job":"Job Data Fetched Successfully",
+                "Created":"Job Created Successfully"
             },
             "error":{
                 "No_Job_Found":"Job Not Found"

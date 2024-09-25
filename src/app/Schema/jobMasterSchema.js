@@ -26,9 +26,6 @@ const JobMasterSchema = {
   pay_scale: {
     type: DataTypes.TEXT,
     allowNull: true,
-    validate: {
-      isJSON: true,
-    },
   },
   start_date: {
     type: DataTypes.DATE,

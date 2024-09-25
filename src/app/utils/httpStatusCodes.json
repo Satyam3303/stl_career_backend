@@ -1,0 +1,41 @@
+{
+    "1xx": {
+      "Continue": "100",
+      "Switching_Protocols": "101"
+    },
+    "2xx": {
+      "OK": "200",
+      "Created": "201",
+      "Accepted": "202",
+      "No_Content": "204"
+    },
+    "3xx": {
+      "Moved_Permanently": "301",
+      "Found": "302",
+      "Not_Modified": "304"
+    },
+    "4xx": {
+      "Bad_Request": "400",
+      "Unauthorized": "401",
+      "Forbidden": "403",
+      "Not_Found": "404",
+      "Conflict": "409"
+    },
+    "5xx": {
+      "Internal_Server_Error": "500",
+      "Bad_Gateway": "502",
+      "Service_Unavailable": "503",
+      "Gateway_Timeout": "504"
+    },
+    "commonCodes": {
+      "Successful_request": "200",
+      "Resource_created": "201",
+      "No_content": "204",
+      "Client_error": "400",
+      "Authentication_failure": "401",
+      "Forbidden_access": "403",
+      "Resource_not_found": "404",
+      "Internal_server_error": "500"
+    }
+  }
+  

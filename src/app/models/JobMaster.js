@@ -12,24 +12,12 @@ async function createJob(data) {
   return await JobMaster.create(data);
 }
 
-async function findJobByJobId(job_code) {
+async function findJobByJobCode(job_code) {
   return await JobMaster.findOne({ where: { job_code } });
 }
 
-async function findApplicantByEmail(email) {
-  return await JobMaster.findOne({ where: { email } });
-}
-
-async function findApplicantByPhone(phone) {
-  return await JobMaster.findOne({ where: { phone } });
-}
-
-async function findApplicantByUserName(username) {
-  return await JobMaster.findOne({ where: { username } });
-}
-
 async function getAllJobs() {
-  return await User.findAll({
+  return await JobMaster.findAll({
     limit: 10, 
   });
 }
@@ -37,6 +25,6 @@ async function getAllJobs() {
 
 module.exports = {
   createJob,
-  findJobByJobId,
+  findJobByJobCode,
   getAllJobs,
 };
