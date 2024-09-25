@@ -19,12 +19,14 @@ const { role_code } = require("../Schema/authenticationSchema");
 const { generateToken } = require("../utils/JWT");
 const messages = require("../utils/messages.json");
 
+const validateKeys = require('../utils/validateKeys')
+
 const isPhoneNumberValid = (value) => /^[0-9]{10}$/.test(value);
 
 // Register an Applicant
 exports.registerApplicant = async (req, res) => {
   try {
-    const { username, phone, email, password } = req.body;
+    const { username, phone, email, password, } = req.body;
 
     if (!username || !phone || !email || !password) {
       return res.status(400).send({
@@ -34,7 +36,7 @@ exports.registerApplicant = async (req, res) => {
         response: {},
       });
     }
-
+    
     let applicant_code;
     let checkCode;
 
@@ -246,9 +248,44 @@ exports.applyApplicant = async (req, res) => {
     const { applicant_code } = req.params;
     const { ...updateData } = req.body;
 
-    // Check if a resume file was uploaded
+    const applicantColumns = [
+      'job_code',
+      'username',
+      'first_name',
+      'middle_name',
+      'last_name',
+      'email',
+      'phone',
+      'dob',
+      'email_id',
+      'years_of_experience',
+      'father_name',
+      'gender',
+      'plot_no',
+      'locality',
+      'post',
+      'state_district',
+      'pin',
+      'qualification',
+      'skill_set',
+      'declaration',
+  ];
+    const missing = validateKeys(updateData,applicantColumns);
+
+    if(!missing.present)
+    {
+      return res.status(400).send({
+        status_code: 400,
+        message: missing.message,
+        success: false,
+        response: {},
+      }
+      )
+    }
+
+    
     if (req.file) {
-      updateData.resume_path = req.file.path; // Save the file path
+      updateData.resume_path = req.file.path;
     }
 
     const applicant = await findApplicantByApplicantCode(applicant_code);
@@ -259,6 +296,21 @@ exports.applyApplicant = async (req, res) => {
         message: messages.en.Users.error.no_user_found,
         success: false,
         response: {},
+      });
+    }
+
+    if(applicant.job_code)
+    {
+      const {id,applicantDataWithoutId}=applicant.get();
+      
+      const newApplicant = await createApplicant({...applicantDataWithoutId,...updateData});
+      return res.status(200).send({
+        status_code: 200,
+        message: messages.en.Users.success.User_Applied,
+        success: true,
+        response: {
+          applicant: newApplicant,
+        },
       });
     }
 

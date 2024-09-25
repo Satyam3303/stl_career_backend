@@ -9,7 +9,8 @@
                 "User_Delete": "User Deleted Successfully",
                 "User_Update": "User Updated Successfully",
                 "All_Users_Fetch": "All Users",
-                "valid_Token": "Valid Toke Provided"
+                "valid_Token": "Valid Toke Provided",
+                "User_Applied":"Successfully Applied for the job"
             },
             "error": {
                 "otp": "Invalid Otp",
