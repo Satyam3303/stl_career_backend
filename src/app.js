@@ -1,12 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-require('dotenv').config('.env');
-
+const app = express();
 const jsonSyntaxErrorHandler = require('./app/utils/syntaxErrorHandler');
 
-const app = express();
+//.env File contains the Sensitive Information
+require('dotenv').config('.env');
 const port = process.env.PORT;
+
 //const userRoutes = require('./routes/userRoutes');
 const jobRoutes = require('./app/routes/jobRoutes');
 const applicantRoutes = require('./app/routes/applicantRoutes');
@@ -23,15 +24,6 @@ app.use(jsonSyntaxErrorHandler);
 app.use('/api/job', jobRoutes);
 app.use('/api/applicant/v1', applicantRoutes);
 
-
-app.use((err, req, res, next) => {
-  logger.error(`Error ${err.status || 500}: ${err.message}`);
-  res.status(err.status || 500).send({
-    status_code: err.status || 500,
-    success: false,
-    message: err.message || 'Internal Server Error',
-  });
-});
 
 app.listen(port, () => {
   console.log(`Server app listening on port ${port}!`);
