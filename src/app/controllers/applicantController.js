@@ -19,7 +19,8 @@ const { role_code } = require("../Schema/authenticationSchema");
 const { generateToken } = require("../utils/JWT");
 const messages = require("../utils/messages.json");
 
-const validateKeys = require('../utils/validateKeys')
+const validateKeys = require('../utils/validateKeys');
+const { use } = require("../routes/applicantRoutes");
 
 const isPhoneNumberValid = (value) => /^[0-9]{10}$/.test(value);
 
@@ -50,7 +51,7 @@ exports.registerApplicant = async (req, res) => {
     } while (checkCode);
 
     const checkUserName = await findApplicantByUserName(username);
-    // const checkEmail = await findApplicantByEmail(email);
+    
 
     if (checkUserName) {
       return res.status(400).send({
@@ -75,6 +76,7 @@ exports.registerApplicant = async (req, res) => {
       user_code:applicant_code,
       password,
       email,
+      role_code:"234545",
       created_by: applicant_code,
       created_at: new Date(),
       updated_by: applicant_code,
@@ -166,13 +168,18 @@ exports.loginApplicant = async (req, res) => {
   try {
     const { username, password } = req.body;
 
+    console.log(username,password);
+    
+
     // Find the applicant by username
     const applicant = await findApplicantByUserName(username);
+    console.log(applicant.get());
+    
 
     if (!applicant) {
       return res.status(404).send({
         status_code: 404,
-        message: messages.en.Users.error.no_user_found,
+        message: messages.en.Users.error.no_user_found ,
         response: {},
       });
     }
@@ -185,7 +192,7 @@ exports.loginApplicant = async (req, res) => {
       return res.status(400).send({
         status_code: 400,
         success: false,
-        message: messages.en.Users.error.invalid_Username_Or_Password,
+        message: messages.en.Users.error.invalid_Username_Or_Password+ username+password,
         response: {},
       });
     }
@@ -250,18 +257,13 @@ exports.applyApplicant = async (req, res) => {
 
     const applicantColumns = [
       'job_code',
-      'username',
       'first_name',
       'middle_name',
-      'last_name',
-      'email',
-      'phone',
+      'last_name',    
       'dob',
-      'email_id',
       'years_of_experience',
       'father_name',
       'gender',
-      'plot_no',
       'locality',
       'post',
       'state_district',

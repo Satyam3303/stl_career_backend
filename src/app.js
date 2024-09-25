@@ -36,7 +36,7 @@ app.use('/api/applicant/v1', applicantRoutes);
 
 
 app.use((err, req, res, next) => {
-  logger.error(`Error ${err.status || 500}: ${err.message}`);
+  // logger.error(`Error ${err.status || 500}: ${err.message}`);
   res.status(err.status || 500).send({
     status_code: err.status || 500,
     success: false,

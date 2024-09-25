@@ -4,11 +4,11 @@ const path = require('path');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, 'uploads/resumes'); 
+      cb(null, 'public/uploads/resumes'); 
     },
     filename:(req, file, cb) => {
        
-      const applicantCode = req.body.applicant_code;
+      const applicantCode = req.params.applicant_code;
       const timestamp = Date.now();
       
       
